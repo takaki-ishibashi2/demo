@@ -2,6 +2,8 @@ const synthe = window.speechSynthesis;
 const inputForm = document.querySelector('form');
 const inputTxt = document.querySelector('#inputTxt');
 const voiceSelect = document.querySelector('select');
+const state = document.querySelector('#state');
+const propVal = document.querySelector('#propVal');
 
 let voices = [];
 
@@ -28,6 +30,7 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
 }
 
 const speak = () => {
+  state.innerText = 'speaking';
   if (inputTxt.value !== '') {
     const ssu = new SpeechSynthesisUtterance(inputTxt.value);
     const selectedVoiceName = voiceSelect.selectedOptions[0].getAttribute('data-name');
@@ -51,3 +54,40 @@ inputForm.onsubmit = evt => {
 voiceSelect.onchange = () => {
   speak();
 }
+
+document.querySelector("#pauseBtn").ontouchstart = () => {
+  state.innerText = 'pausing';
+  synthe.pause();
+}
+document.querySelector("#resumeBtn").ontouchstart = () => {
+  state.innerText = 'speaking';
+  synthe.resume();
+}
+document.querySelector("#cancelBtn").ontouchstart = () => {
+  synthe.cancel();
+}
+
+document.querySelector('#readPaused').ontouchstart = () => {
+  if (synthe.paused) {
+    return propVal.innerText = 'Yes, paused';
+  }
+  propVal.innerText = 'No, puased';
+}
+
+document.querySelector('#readPending').ontouchstart = () => {
+  console.log(synthe.pending);
+}
+
+document.querySelector('#readSpeaking').ontouchstart = () => {
+  if (synthe.speaking) {
+    return propVal.innerText = 'Yes, speaking';
+  }
+  propVal.innerText = 'No, speaking';
+}
+
+const callback = () => {
+  if (!synthe.speaking) {
+    state.innerText = 'waiting...';
+  }
+}
+window.setInterval(callback, 100);
