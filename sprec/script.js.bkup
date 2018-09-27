@@ -1,0 +1,54 @@
+const getRecognitionObject = () => {
+  if (window.hasOwnProperty('SpeechRecognition')) {
+    return new SpeechRecognition();
+  } else {
+    return new webkitSpeechRecognition();
+  }
+}
+const getGrammarList = () => {
+  if (window.hasOwnProperty('SpeechGrammarList')) {
+    return new SpeechGrammarList();
+  } else {
+    return new webkitSpeechGrammarList();
+  }
+}
+
+const output = document.querySelector('#output');
+const bg = document.querySelector('html');
+const main = document.querySelector('#main');
+const recognition = getRecognitionObject();
+const recognitionGrammarList = getGrammarList();
+const grammar = '#JSGF V1.0; grammar colors; public <color> = blue | red | green ;';
+recognitionGrammarList.addFromString(grammar, 1); // addFromString(string, importance of this grammar);
+recognition.grammars = recognitionGrammarList;
+recognition.lang = 'en-US';
+recognition.interimResults = false; // todo
+recognition.maxAlternatives = 1; // maybe:認識結果の最大数
+
+main.onclick = () => {
+  recognition.start();
+  output.textContent = 'Try saying "blue", "red" or "green".';
+}
+
+recognition.onresult = evt => {
+  const color = evt.results[0][0].transcript;
+  output.textContent = `You said ${color}.`;
+  bg.style.backgroundColor = color;
+
+  const utter = new SpeechSynthesisUtterance(`You said, ${color}.`);
+  utter.voice = voices[3];
+  utter.pitch = 1;
+  utter.rate = 1;
+  synthesis.speak(utter);
+}
+
+// Synthesis
+const synthesis = window.speechSynthesis;
+let voices = [];
+const prepareVoices = () => {
+  voices = synthesis.getVoices();
+}
+prepareVoices();
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = prepareVoices;
+}
