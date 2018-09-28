@@ -7,13 +7,13 @@
     <title>Speech synthesiser demo</title>
   </head>
   <body>
-    <h1>Speech synthesiser demo</h1>
-    <h3 id="state">waiting...</h3>
+    <h1 id="state">waiting...</h1>
+
     <select></select>
 
     <form>
       <textarea id="inputTxt">The touchstart event occurs when the user touches an element.</textarea>
-      <button type="submit" id="playBtn">Play</button>
+      <button type="submit" id="speakBtn">Speak</button>
     </form>
    
     <div>
@@ -23,15 +23,14 @@
     </div>
 
     <div>
-      <button id="readPaused">Read paused</button>
-      <button id="readPending" hidden>Read pending</button>
-      <button id="readSpeaking">Read speaking</button>
+      <button id="readPausedBtn">Read paused prop</button>
+      <button id="readPendingBtn" hidden>Read pending prop</button>
+      <button id="readSpeakingBtn">Read speaking prop</button>
     </div>
 
-    <p id="propVal"></p>
+    <p id="property"></p>
 
-    <script src="script.js"></script>
+    <script async src="script.js"></script>
   </body>
 
 </html>
-
