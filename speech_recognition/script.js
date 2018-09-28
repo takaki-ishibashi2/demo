@@ -1,4 +1,4 @@
-class SpeechRecognitionWrapper {
+class SpeechRecognitionWrapped {
   constructor() {
     this.recognition = this.getRecognition();
     this.grammarList = this.getGrammarList();
@@ -35,17 +35,17 @@ class SpeechRecognitionWrapper {
   }
 }
 
-const spw = new SpeechRecognitionWrapper();
+const sr = new SpeechRecognitionWrapped();
 const output = document.querySelector('#output');
 const bg = document.querySelector('html');
 const root = document.querySelector('#root');
 
 root.onclick = () => {
-  spw.start();
+  sr.start();
   output.textContent = 'Try saying "blue", "red" or "green".';
 }
 
-spw.recognition.onresult = evt => {
+sr.recognition.onresult = evt => {
   const color = evt.results[0][0].transcript;
   output.textContent = `You said ${color}.`;
   bg.style.backgroundColor = color;
